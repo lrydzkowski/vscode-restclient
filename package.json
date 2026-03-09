@@ -183,6 +183,11 @@
         "command": "rest-client.import-swagger",
         "title": "Import from file",
         "category": "Rest Client"
+      },
+      {
+        "command": "rest-client.custom-button",
+        "title": "Execute Custom Button",
+        "category": "Rest Client"
       }
     ],
     "menus": {
@@ -454,6 +459,23 @@
                 }
               }
             ]
+          }
+        },
+        "rest-client.customButtons": {
+          "type": "object",
+          "default": {},
+          "scope": "resource",
+          "markdownDescription": "Defines custom CodeLens buttons per environment that appear next to 'Send Request'. Uses the same `$shared` convention as `environmentVariables`. Each environment maps to an array of `{ \"label\": \"...\", \"command\": \"...\" }` objects where `command` is a PowerShell command to execute in a terminal.",
+          "additionalProperties": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["label", "command"],
+              "properties": {
+                "label": { "type": "string", "description": "Button label displayed in CodeLens" },
+                "command": { "type": "string", "description": "PowerShell command to execute when clicked" }
+              }
+            }
           }
         },
         "rest-client.mimeAndFileExtensionMapping": {

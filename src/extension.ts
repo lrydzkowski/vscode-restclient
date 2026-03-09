@@ -54,6 +54,14 @@ export async function activate(context: ExtensionContext) {
         });
     }));
     context.subscriptions.push(commands.registerCommand('rest-client.import-swagger', async () => swaggerController.import()));
+    context.subscriptions.push(commands.registerCommand('rest-client.custom-button',
+        (powershellCommand: string) => {
+            const existingTerminal = window.terminals.find(t => t.name === 'REST Client');
+            const terminal = existingTerminal ?? window.createTerminal('REST Client');
+            terminal.show();
+            terminal.sendText(powershellCommand);
+        }
+    ));
 
 
     const documentSelector = [
