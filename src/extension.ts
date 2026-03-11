@@ -56,8 +56,12 @@ export async function activate(context: ExtensionContext) {
     context.subscriptions.push(commands.registerCommand('rest-client.import-swagger', async () => swaggerController.import()));
     context.subscriptions.push(commands.registerCommand('rest-client.custom-button',
         (powershellCommand: string) => {
-            const existingTerminal = window.terminals.find(t => t.name === 'REST Client');
-            const terminal = existingTerminal ?? window.createTerminal('REST Client');
+            const terminalName = 'REST Client';
+            const existingTerminal = window.terminals.find(t => t.name === terminalName);
+            existingTerminal?.dispose();
+            const terminal = window.createTerminal({
+                name: terminalName
+            });
             terminal.show();
             terminal.sendText(powershellCommand);
         }
