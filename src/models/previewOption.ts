@@ -2,7 +2,8 @@ export enum PreviewOption {
     Full,
     Headers,
     Body,
-    Exchange
+    Exchange,
+    ReverseExchange
 }
 
 export function fromString(value: string): PreviewOption {
@@ -14,6 +15,8 @@ export function fromString(value: string): PreviewOption {
             return PreviewOption.Body;
         case 'exchange':
             return PreviewOption.Exchange;
+        case 'reverseexchange':
+            return PreviewOption.ReverseExchange;
         case 'full':
         default:
             return PreviewOption.Full;

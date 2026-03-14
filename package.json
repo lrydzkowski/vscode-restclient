@@ -599,13 +599,15 @@
             "full",
             "headers",
             "body",
-            "exchange"
+            "exchange",
+            "reverseExchange"
           ],
           "enumDescriptions": [
             "Response headers, body and status line",
             "Response headers and status line",
             "Response body only",
-            "Whole HTTP exchange including both request and response"
+            "Whole HTTP exchange including both request and response",
+            "Response followed by sent request details"
           ],
           "default": "full",
           "scope": "resource",

@@ -323,6 +323,26 @@ ${formatHeaders(response.headers)}`;
             }
         }
 
+        if (previewOption === PreviewOption.ReverseExchange) {
+            code += '\r\n'.repeat(2);
+            const request = response.request;
+            const requestNonBodyPart = `${request.method} ${request.url} HTTP/1.1
+${formatHeaders(request.headers)}`;
+            code += hljs.highlight('http', requestNonBodyPart + '\r\n').value;
+            if (request.body) {
+                if (typeof request.body !== 'string') {
+                    request.body = 'NOTE: Request Body From File Is Not Shown';
+                }
+                const requestBodyPart = `${ResponseFormatUtility.formatBody(request.body, request.contentType, true)}`;
+                const bodyLanguageAlias = HttpResponseWebview.getHighlightLanguageAlias(request.contentType, request.body);
+                if (bodyLanguageAlias) {
+                    code += hljs.highlight(bodyLanguageAlias, requestBodyPart).value;
+                } else {
+                    code += hljs.highlightAuto(requestBodyPart).value;
+                }
+            }
+        }
+
         return code;
     }
 
