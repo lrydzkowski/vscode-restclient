@@ -1,3 +1,8 @@
+## 0.28.0 (2026/03/14)
+* __Feature__: Add `customButtons` setting to define custom code lens buttons per environment that execute terminal commands
+* __Feature__: Show currently selected environment as a code lens above each request for quick switching
+* __Feature__: Add `reverseExchange` preview option to display response before request details
+
 ## 0.25.1 (2022/07/06)
 * __Bug Fix__: [Fix request parse error for curl request without body](https://github.com/Huachao/vscode-restclient/issues/1026)
 
