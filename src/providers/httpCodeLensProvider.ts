@@ -24,8 +24,17 @@ export class HttpCodeLensProvider implements CodeLensProvider, Disposable {
 
         const customButtons = await this.getCustomButtons();
 
+        const env = await EnvironmentController.getCurrentEnvironment();
+        const envLabel = `Env: ${env.name === Constants.NoEnvironmentSelectedName ? 'None' : env.name}`;
+
         for (const [blockStart, blockEnd] of requestRanges) {
             const range = new Range(blockStart, 0, blockEnd, 0);
+            
+            blocks.push(new CodeLens(range, {
+                title: envLabel,
+                command: 'rest-client.switch-environment',
+            }));
+
             const cmd: Command = {
                 arguments: [document, range],
                 title: 'Send Request',
