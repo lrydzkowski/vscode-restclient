@@ -52,7 +52,7 @@ export class HttpResponseTextDocumentView {
             content += formatHeaders(request.headers);
             if (request.body) {
                 if (typeof request.body !== 'string') {
-                    request.body = 'NOTE: Request Body From Is File Not Shown';
+                    request.body = 'NOTE: Request Body From File Is Not Shown';
                 }
                 content += `${EOL}${ResponseFormatUtility.formatBody(request.body.toString(), request.contentType, true)}${EOL}`;
             }
