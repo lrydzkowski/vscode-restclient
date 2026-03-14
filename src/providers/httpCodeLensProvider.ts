@@ -22,10 +22,10 @@ export class HttpCodeLensProvider implements CodeLensProvider, Disposable {
         const lines: string[] = document.getText().split(Constants.LineSplitterRegex);
         const requestRanges: [number, number][] = Selector.getRequestRanges(lines);
 
-        const customButtons = await this.getCustomButtons();
-
         const env = await EnvironmentController.getCurrentEnvironment();
         const envLabel = `Env: ${env.name === Constants.NoEnvironmentSelectedName ? 'None' : env.name}`;
+
+        const customButtons = await this.getCustomButtons(env);
 
         for (const [blockStart, blockEnd] of requestRanges) {
             const range = new Range(blockStart, 0, blockEnd, 0);
@@ -54,13 +54,12 @@ export class HttpCodeLensProvider implements CodeLensProvider, Disposable {
         return blocks;
     }
 
-    private async getCustomButtons(): Promise<Array<{ label: string; command: string }>> {
+    private async getCustomButtons(env: { name: string }): Promise<Array<{ label: string; command: string }>> {
         const settings = SystemSettings.Instance;
         const allButtons = settings.customButtons;
 
         const shared = allButtons[EnvironmentController.sharedEnvironmentName] ?? [];
 
-        const env = await EnvironmentController.getCurrentEnvironment();
         if (env.name === Constants.NoEnvironmentSelectedName) {
             return shared;
         }
