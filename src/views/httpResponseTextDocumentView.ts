@@ -52,7 +52,7 @@ export class HttpResponseTextDocumentView {
             content += formatHeaders(request.headers);
             if (request.body) {
                 if (typeof request.body !== 'string') {
-                    request.body = 'NOTE: Request Body From Is File Not Shown';
+                    request.body = 'NOTE: Request Body From File Is Not Shown';
                 }
                 content += `${EOL}${ResponseFormatUtility.formatBody(request.body.toString(), request.contentType, true)}${EOL}`;
             }
@@ -68,6 +68,19 @@ export class HttpResponseTextDocumentView {
         if (previewOption !== PreviewOption.Headers) {
             const prefix = previewOption === PreviewOption.Body ? '' : EOL;
             content += `${prefix}${ResponseFormatUtility.formatBody(response.body, response.contentType, true)}`;
+        }
+
+        if (previewOption === PreviewOption.ReverseExchange) {
+            const request = response.request;
+            content += EOL.repeat(2);
+            content += `${request.method} ${request.url} HTTP/1.1${EOL}`;
+            content += formatHeaders(request.headers);
+            if (request.body) {
+                if (typeof request.body !== 'string') {
+                    request.body = 'NOTE: Request Body From File Is Not Shown';
+                }
+                content += `${EOL}${ResponseFormatUtility.formatBody(request.body.toString(), request.contentType, true)}`;
+            }
         }
 
         return content;

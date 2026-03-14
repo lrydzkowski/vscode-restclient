@@ -54,6 +54,18 @@ export async function activate(context: ExtensionContext) {
         });
     }));
     context.subscriptions.push(commands.registerCommand('rest-client.import-swagger', async () => swaggerController.import()));
+    context.subscriptions.push(commands.registerCommand('rest-client.custom-button',
+        (powershellCommand: string) => {
+            const terminalName = 'REST Client';
+            const existingTerminal = window.terminals.find(t => t.name === terminalName);
+            existingTerminal?.dispose();
+            const terminal = window.createTerminal({
+                name: terminalName
+            });
+            terminal.show();
+            terminal.sendText(powershellCommand);
+        }
+    ));
 
 
     const documentSelector = [
@@ -70,7 +82,12 @@ export async function activate(context: ExtensionContext) {
     context.subscriptions.push(languages.registerHoverProvider(documentSelector, new RequestVariableHoverProvider()));
     context.subscriptions.push(
         new ConfigurationDependentRegistration(
-            () => languages.registerCodeLensProvider(documentSelector, new HttpCodeLensProvider()),
+            () => {
+                const provider = new HttpCodeLensProvider();
+                const registration = languages.registerCodeLensProvider(documentSelector, provider);
+
+                return { dispose() { registration.dispose(); provider.dispose(); } };
+            },
             s => s.enableSendRequestCodeLens));
     context.subscriptions.push(
         new ConfigurationDependentRegistration(
