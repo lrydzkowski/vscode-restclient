@@ -82,7 +82,12 @@ export async function activate(context: ExtensionContext) {
     context.subscriptions.push(languages.registerHoverProvider(documentSelector, new RequestVariableHoverProvider()));
     context.subscriptions.push(
         new ConfigurationDependentRegistration(
-            () => languages.registerCodeLensProvider(documentSelector, new HttpCodeLensProvider()),
+            () => {
+                const provider = new HttpCodeLensProvider();
+                const registration = languages.registerCodeLensProvider(documentSelector, provider);
+
+                return { dispose() { registration.dispose(); provider.dispose(); } };
+            },
             s => s.enableSendRequestCodeLens));
     context.subscriptions.push(
         new ConfigurationDependentRegistration(
